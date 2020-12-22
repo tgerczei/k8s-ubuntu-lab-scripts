@@ -1,0 +1,13 @@
+if [ ${K8S_VERSION_CURRENT:-v0.0.0} = ${K8S_VERSION_LATEST#v} ];
+	then
+		echo nothing to do
+		exit 0
+fi
+
+sudo apt install -y kubeadm=${K8S_VERSION_LATEST#v}-00
+sudo kubeadm upgrade node
+sudo apt install -y kube{let,ctl}=${K8S_VERSION_LATEST#v}-00
+sudo apt autoremove -y
+sudo apt autoclean
+sudo journalctl --vacuum-time=3d
+#sudo docker image prune -af

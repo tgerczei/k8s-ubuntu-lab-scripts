@@ -1,0 +1,5 @@
+sudo apt-mark hold kube{adm,let,ctl,rnetes-cni}
+sudo apt upgrade -y
+sudo apt-mark unhold kube{adm,let,ctl,rnetes-cni}
+sudo shutdown -r now
+
