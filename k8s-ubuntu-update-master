@@ -10,5 +10,3 @@ sudo apt install -y kube{let,ctl}=${K8S_VERSION_LATEST#v}-00
 sudo apt autoremove -y
 sudo apt autoclean
 sudo journalctl --vacuum-time=3d
-#sudo docker image prune -af
-
