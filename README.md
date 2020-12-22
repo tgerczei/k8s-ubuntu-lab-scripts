@@ -20,7 +20,7 @@ ssh worker1 bash -xs < k8s-ubuntu-install
 
 # UPGRADE
 ## when upgrading point releases
-export K8S_VERSION_CURRENT=$(kc version --short | awk '/^Server/{print substr($3,2)}')<br>
+export K8S_VERSION_CURRENT=$(kubectl version --short | awk '/^Server/{print substr($3,2)}')<br>
 export K8S_VERSION_LATEST=$(curl -sL https://dl.k8s.io/release/stable-${K8S_VERSION_CURRENT%.*}.txt)
 
 ## otherwise
