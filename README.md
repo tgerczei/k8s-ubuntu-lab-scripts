@@ -11,44 +11,48 @@
 - one knows there are other, possibly better ways
 
 # INSTALLATION
-ssh master1 bash -xs < k8s-ubuntu-install<br>
+```bash
+ssh master1 bash -xs < k8s-ubuntu-install
 ssh worker1 bash -xs < k8s-ubuntu-install
+```
 
 ## generic installation procedure
 - kubeadm init on <strong>master1</strong>
 - kubeadm join on <strong>worker1</strong>
 
 # UPGRADE
+```bash
 ## when upgrading point releases
-export K8S_VERSION_CURRENT=$(kubectl version --short | awk '/^Server/{print substr($3,2)}')<br>
+export K8S_VERSION_CURRENT=$(kubectl version --short | awk '/^Server/{print substr($3,2)}')
 export K8S_VERSION_LATEST=$(curl -sL https://dl.k8s.io/release/stable-${K8S_VERSION_CURRENT%.*}.txt)
 
 ## otherwise
-export K8S_VERSION_MAJOR=1<br>
+export K8S_VERSION_MAJOR=1
 export K8S_VERSION_LATEST=$(curl -sL https://dl.k8s.io/release/stable-${K8S_VERSION_MAJOR}.txt)
 
 ### control plane first
-kubectl drain master1 --ignore-daemonsets --delete-local-data<br>
+kubectl drain master1 --ignore-daemonsets --delete-local-data
 ssh master1 sudo apt update
 
 ### when upgrading the OS
 ssh master1 bash -xs < k8s-ubuntu-update-os
 
 ### otherwise
-ssh master1 bash -xs < k8s-ubuntu-update-master<br>
-kubectl uncordon master1<br>
-sleep 60<br>
+ssh master1 bash -xs < k8s-ubuntu-update-master
+kubectl uncordon master1
+sleep 60
 ssh master1 sudo docker image prune -af
 
 ### workload plane, workers one by one
-kubectl drain worker1 --ignore-daemonsets --delete-local-data<br>
+kubectl drain worker1 --ignore-daemonsets --delete-local-data
 ssh worker1 sudo apt update
 
 ### when upgrading the OS
 ssh worker1 bash -xs < k8s-ubuntu-update-os
 
 ### otherwise
-ssh worker1 bash -xs < k8s-ubuntu-update-worker<br>
-kubectl uncordon worker1<br>
-sleep 60<br>
+ssh worker1 bash -xs < k8s-ubuntu-update-worker
+kubectl uncordon worker1
+sleep 60
 ssh worker1 sudo docker image prune -af
+```
